@@ -11,7 +11,7 @@ miggo-operator:
 
   ## Reference one or more secrets to be used when pulling images from authenticated repositories.
   imagePullSecrets:
-    - name: regcred
+    - name: dude-secret
 
   imageCredentials:
     registry: https://index.docker.io/v1/
@@ -35,7 +35,8 @@ miggo-operator:
   ##
   manager:
     image:
-      repository: "miggoprod/miggo-operator" 
+      # repository: "miggoprod/miggo-operator" 
+      repository: "david-test-operator" 
       tag: "latest"
     collectorImage: 
       repository:  "miggoprod/miggo-infra-agent"
@@ -120,7 +121,7 @@ miggo-operator:
     ## Enable leader election mechanism for protecting against split brain if multiple operator pods/replicas are started.
     ## See more at https://docs.openshift.com/container-platform/4.10/operators/operator_sdk/osdk-leader-election.html
     leaderElection:
-      enabled: true
+      enabled: false
 
     # Enable vertical pod autoscaler support for the manager
     verticalPodAutoscaler:
@@ -272,3 +273,39 @@ miggo-operator:
     image:
       repository: busybox
       tag: latest
+
+  collector:
+    customerAttr: "io.miggo.tenant.id=1f6208b0-5683-4e1e-a45d-eab574c40d0f,io.miggo.project.id=f8fe49bb-b2eb-4a6e-9735-cee5ee472641"
+
+    deployCollector: true
+
+    collectorNameSpace: miggo-space
+    collectorPort: 4318
+    math:
+      enabled: false
+      name: "miggo"
+      image:
+        repository: "miggoprod/math"
+        tag: latest
+      configJson: 
+        username: "miggo-test"
+        password: "test"
+
+  updater:
+    image: "miggoprod/math-updater:latest"
+    cronjobSchedule: "1" # time in min
+    collectorFileName: config.yaml
+    mathFileName: "config.json"
+    
+    aws:
+      bucketName: "miggo-infra-agent/test"
+
+      # Leave empty if you want to create default secrets based on the below params.
+      #    
+      existingSecret: ""
+      
+      # Ignored when existingAwsSecret specified
+      # 
+      accessKeyId: "<masked>"
+      secretAccessKey: "<masked>"
+      region: "us-east-1"
