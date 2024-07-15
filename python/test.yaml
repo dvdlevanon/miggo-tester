@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: test
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: test
+  template:
+    metadata:
+      labels:
+        app: test
+    spec:
+      imagePullSecrets:
+      - name: miggo-dockerconfigjson
+      containers:
+      - name: test
+        image: miggoprod/autoinstrumentation-python:latest
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8080

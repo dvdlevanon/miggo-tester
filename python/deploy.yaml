@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: otel-test-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: otel-test
+  template:
+    metadata:
+      labels:
+        app: otel-test
+    spec:
+      terminationGracePeriodSeconds: 0
+      containers:
+      - name: otel-test
+        image: otel-test:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 8080
