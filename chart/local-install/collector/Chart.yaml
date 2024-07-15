@@ -1,0 +1,7 @@
+apiVersion: v2
+name: collector
+version: 0.1.0
+dependencies:
+  - name: miggo-collector
+    repository: file://../../../../git/miggo-helm-charts/charts/miggo-collector/
+    version: ~0

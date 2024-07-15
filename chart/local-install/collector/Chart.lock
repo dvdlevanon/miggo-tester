@@ -1,0 +1,6 @@
+dependencies:
+- name: miggo-collector
+  repository: file://../../../../git/miggo-helm-charts/charts/miggo-collector/
+  version: 0.1.7
+digest: sha256:76ff71968aab44ac091fd36e2a588f6d360dc8d5121ff5219e6d8d4f683bbd65
+generated: "2024-07-07T12:30:45.231679524+03:00"

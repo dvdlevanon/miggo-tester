@@ -1,0 +1,42 @@
+miggo-collector:
+  imageCredentials:
+    registry: https://index.docker.io/v1/
+    username: "dorgs"
+    password: "<masked>"
+
+
+  #operatorServiceAccount: {{ .Release.Name }} -collector
+
+  ## aws fields for updater job.
+  aws:
+    accessKeyId: "<masked>"
+    secretAccessKey: "<masked>"
+    region: "us-east-1"
+    bucketName: "miggo-infra-agent/test" 
+    fileName: config.yaml
+
+
+  updater:
+    image: "miggoprod/updater:latest"
+    cronjobSchedule: "1" # time in min
+
+  customerAttr: "io.miggo.tenant.id=1f6208b0-5683-4e1e-a45d-eab574c40d0f,io.miggo.project.id=f8fe49bb-b2eb-4a6e-9735-cee5ee472641"
+
+  deployCollector: true
+
+  collectorNameSpace: miggo-space
+  collectorPort: 4318
+  math:
+    enabled: true
+    name: "miggo"
+    image:
+      repository: "miggoprod/math"
+      tag: latest
+    configJson: 
+      username: "miggo-test"
+      password: "test"
+    updater:
+      image: "miggoprod/math-updater:latest"
+      cronjobSchedule: "1" # time in min
+    aws:
+      fileName: "config.json"
