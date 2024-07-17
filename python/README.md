@@ -31,6 +31,6 @@ Follow these steps to deploy and test the application:
 
 1. Install and start [Minikube](https://minikube.sigs.k8s.io/docs/start) locally.
 2. Run `./docker-build.sh` to build the image inside Minikube.
-3. Run `./deploy.sh` to deploy the application to Minikube.
+3. Run `./apply.sh` to deploy the application to Minikube.
 4. Run `./port-forward.sh` followed by ./call-rolldice.sh in another shell to call the HTTP endpoint.
 5. Run `./patch.sh` to allow Miggo to instrument the application.
