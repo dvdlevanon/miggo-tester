@@ -1,0 +1,51 @@
+# comment just to reload infra agent due to 2023-12-06 issue
+spec:
+  config: |
+    receivers:
+      otlp:
+        protocols:
+          http:
+          grpc: 
+      prometheus:
+        config:
+          scrape_configs:
+            - job_name: 'Dude' 
+              scrape_interval: 5s 
+              static_configs:
+                - targets: [ 'localhost:8888' ]
+              metric_relabel_configs:
+                - source_labels: [ __name__ ]
+                  regex: 'otelcol_exporter_enqueue_failed_spans|otelcol_exporter_queue_capacity|otelcol_exporter_queue_size|otelcol_exporter_sent_spans|otelcol_receiver_accepted_spans|otelcol_receiver_refused_spans|otelcol_process_cpu_seconds|otelcol_process_memory_rss|otelcol_process_runtime_total_sys_memory_bytes'
+                  action: keep
+
+    processors:
+      batch:
+       send_batch_size: 100 # this is not an enforcement rule, just a trigger
+       send_batch_max_size: 100 # this config means that if some batch is larger than 100, then it will break it down to smaller batches
+       timeout: 10s # allow the batch to fill up for 10 seconds
+
+      
+    exporters:
+      otlphttp/pipeline:
+        traces_endpoint: https://collector.staging.miggo.io/v1/traces
+        metrics_endpoint: https://collector.staging.miggo.io/v1/metrics
+        # metrics_endpoint: http://192.168.49.1:9090/v1/metrics
+        # metrics_endpoint: http://192.168.49.1:9090/api/v1/otlp/v1/metrics
+        # metrics_endpoint: http://192.168.49.1:9091/metrics/job/test
+        headers:
+          Authorization: Basic <masked>
+
+      debug:
+        verbosity: detailed
+
+    service:
+      pipelines:
+        traces:
+          receivers: [otlp]
+          processors: [batch]
+          exporters: [otlphttp/pipeline, debug]
+        metrics:
+          receivers: [prometheus]
+          processors: [batch]
+          exporters: [otlphttp/pipeline]
+
