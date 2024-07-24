@@ -1,0 +1,7 @@
+apiVersion: v2
+name: operator
+version: 0.1.0
+dependencies:
+  - name: miggo-operator
+    repository: file://../../../../git/miggo-helm-charts/charts/miggo-operator/
+    version: ~0
