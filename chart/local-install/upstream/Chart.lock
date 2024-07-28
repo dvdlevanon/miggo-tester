@@ -1,6 +1,6 @@
 dependencies:
 - name: miggo-operator
-  repository: file://../../../../git/miggo-helm-charts/charts/miggo-operator/
+  repository: file://../../../../miggo-helm-charts/charts/miggo-operator/
   version: 0.64.4
-digest: sha256:a0a305866865028cd6792a04f9c356b5e10e33298e38c117a7ab34e3435bcaef
-generated: "2024-07-24T12:41:01.170322032+03:00"
+digest: sha256:e55f5efa8c54f57dd8dbb830ebc199dc41ed4fa85f791a372927f182e24384aa
+generated: "2024-07-28T14:52:04.721726738+03:00"

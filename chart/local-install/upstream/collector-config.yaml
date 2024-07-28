@@ -1,11 +1,16 @@
-# comment just to reload infra agent due to 2023-12-06 issue
+apiVersion: opentelemetry.io/v1beta1
+kind: OpenTelemetryCollector
+metadata:
+  name: miggo-operator
 spec:
-  config: |
+  mode: deployment
+  imagePullPolicy: Always
+  config:
     receivers:
       otlp:
         protocols:
-          http:
-          grpc: 
+          http: {}
+          grpc: {}
       prometheus:
         config:
           scrape_configs:
