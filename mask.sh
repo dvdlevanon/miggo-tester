@@ -12,7 +12,7 @@ function replace_token() {
 		replace=$temp
 	fi
 	
-	find . -type f -exec sed -i "s|$search|$replace|g" {} +
+	find . -type f ! -name "mask.sh" -exec sed -i "s|$search|$replace|g" {} +
 }
 
 replace_token "password: \"$MIGGO_DOCKER_REGISTRY_TOKEN\"" "password: \"<masked>\""
