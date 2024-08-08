@@ -1,1 +1,2 @@
-kubectl patch deployment.apps/otel-test-deployment -n default -p '{"spec":{"template": {"metadata": {"annotations":{"instrumentation.opentelemetry.io/inject-python": "miggo-space/miggo-operator-instrumentation"}}}}}'
+
+kubectl patch opentelemetrycollector miggo-operator -n miggo-space --type=merge --patch-file collector-config.yaml

@@ -11,7 +11,7 @@ miggo-operator:
 
   ## Reference one or more secrets to be used when pulling images from authenticated repositories.
   imagePullSecrets:
-    - name: regcred
+    - name: 
 
   imageCredentials:
     registry: https://index.docker.io/v1/
@@ -120,7 +120,7 @@ miggo-operator:
     ## Enable leader election mechanism for protecting against split brain if multiple operator pods/replicas are started.
     ## See more at https://docs.openshift.com/container-platform/4.10/operators/operator_sdk/osdk-leader-election.html
     leaderElection:
-      enabled: true
+      enabled: false
 
     # Enable vertical pod autoscaler support for the manager
     verticalPodAutoscaler:
@@ -225,8 +225,7 @@ miggo-operator:
     ## TLS Certificate Option 2: Use Helm to automatically generate self-signed certificate.
     ## certManager must be disabled and autoGenerateCert must be enabled.
     ## If true and certManager.enabled is false, Helm will automatically create a self-signd cert and secret for you.
-    # autoGenerateCert: 
-    #   enabled: true
+    autoGenerateCert: true
 
     ## TLS Certificate Option 3: Use your own self-signed certificate.
     ## certManager and autoGenerateCert must be disabled and cert_file, key_file, and ca_file must be set.
@@ -275,27 +274,6 @@ miggo-operator:
       tag: latest
 
   collector:
-    imageCredentials:
-      registry: https://index.docker.io/v1/
-      username: "dorgs"
-      password: "<masked>"
-
-
-    #operatorServiceAccount: {{ .Release.Name }} -collector
-
-    ## aws fields for updater job.
-    aws:
-      accessKeyId: "<masked>"
-      secretAccessKey: "<masked>"
-      region: "us-east-1"
-      bucketName: "miggo-infra-agent/test" 
-      fileName: config.yaml
-
-
-    updater:
-      image: "miggoprod/updater:latest"
-      cronjobSchedule: "100000" # time in min
-
     customerAttr: "io.miggo.tenant.id=1f6208b0-5683-4e1e-a45d-eab574c40d0f,io.miggo.project.id=f8fe49bb-b2eb-4a6e-9735-cee5ee472641"
 
     deployCollector: true
@@ -311,8 +289,22 @@ miggo-operator:
       configJson: 
         username: "miggo-test"
         password: "test"
-      updater:
-        image: "miggoprod/math-updater:latest"
-        cronjobSchedule: "1" # time in min
-      aws:
-        fileName: "config.json"
+
+  updater:
+    image: "miggoprod/math-updater:latest"
+    cronjobSchedule: "1" # time in min
+    collectorFileName: config.yaml
+    mathFileName: "config.json"
+    
+    aws:
+      bucketName: "miggo-infra-agent/test"
+
+      # Leave empty if you want to create default secrets based on the below params.
+      #    
+      existingSecret: ""
+      
+      # Ignored when existingAwsSecret specified
+      # 
+      accessKeyId: "<masked>"
+      secretAccessKey: "<masked>"
+      region: "us-east-1"
